@@ -1,6 +1,6 @@
 import api from "../../apiService.js";
 
-export const fetchData = async (pageNum, limit, query) => {
+const fetchData = async (pageNum, limit, query) => {
   try {
     let url = `/books?_page=${pageNum}&_limit=${limit}`;
     if (query) url += `&q=${query}`;
@@ -10,3 +10,5 @@ export const fetchData = async (pageNum, limit, query) => {
     return error;
   }
 };
+
+export default fetchData;

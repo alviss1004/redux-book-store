@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../apiService";
-import { fetchBooks } from "./bookAPI";
+import fetchBooks from "./bookAPI";
 import { toast } from "react-toastify";
 
 const initialState = {
@@ -42,7 +42,7 @@ export const getBookDetail = createAsyncThunk(
   }
 );
 
-export const getBooks = createAsyncThunk("book/getBooks", async (props) => {
+export const fetchData = createAsyncThunk("book/fetchData", async (props) => {
   const response = await fetchBooks(props);
   return response.data;
 });
@@ -53,14 +53,14 @@ export const bookSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getBooks.pending, (state) => {
+      .addCase(fetchData.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getBooks.fulfilled, (state, action) => {
-        state.status = "idle";
+      .addCase(fetchData.fulfilled, (state, action) => {
+        state.status = null;
         state.books = action.payload;
       })
-      .addCase(getBooks.rejected, (state, action) => {
+      .addCase(fetchData.rejected, (state, action) => {
         state.status = "failed";
       });
     builder
@@ -75,7 +75,7 @@ export const bookSlice = createSlice({
         state.status = "pending";
       })
       .addCase(getReadingList.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.status = null;
         state.readinglist = action.payload;
       })
       .addCase(getReadingList.rejected, (state, action) => {
@@ -86,7 +86,7 @@ export const bookSlice = createSlice({
         state.status = "pending";
       })
       .addCase(removeBook.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.status = null;
         toast.success("The book has been removed");
       })
       .addCase(removeBook.rejected, (state, action) => {
@@ -97,7 +97,7 @@ export const bookSlice = createSlice({
         state.status = "pending";
       })
       .addCase(getBookDetail.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.status = null;
         state.bookDetail = action.payload;
       })
       .addCase(getBookDetail.rejected, (state, action) => {
@@ -105,3 +105,4 @@ export const bookSlice = createSlice({
       });
   },
 });
+export default bookSlice.reducer;
